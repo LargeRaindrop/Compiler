@@ -1,5 +1,5 @@
-FROM g++:10
+FROM gcc:10
 WORKDIR /app/
 COPY ./* ./
-RUN g++ Lexer.cpp -o Lexer.out
+RUN gcc Lexer.cpp -o Lexer.out
 RUN chmod +x Lexer.out
