@@ -51,6 +51,11 @@ int getNumber()
     addNul();
     return atoi(token);
 }
+void error()
+{
+    printf("Unknown\n");
+    exit(0);
+}
 void getsym()
 {
     clearToken();
@@ -99,7 +104,7 @@ void getsym()
     else if (ch == ')')
         printf("RParenthesis\n");
     else if (!feof(fp))
-        printf("Unknown\n");
+        error();
 }
 int main(int argc, char *argv[])
 {
