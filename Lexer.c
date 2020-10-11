@@ -2,7 +2,7 @@
 #include <string.h>
 #include <ctype.h>
 #include <stdlib.h>
-const int MAX_LEN = 100;
+#define MAX_LEN 100
 FILE *fp;
 int len;
 char ch;
