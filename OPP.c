@@ -1,6 +1,6 @@
 #include <stdio.h>
 #include <string.h>
-#define DEBUG
+// #define DEBUG
 #define MAX_LEN 1009
 #define STACK_LEN 1009
 #define TER_SYM_NUM 6
