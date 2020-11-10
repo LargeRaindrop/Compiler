@@ -1,6 +1,6 @@
 #include <stdio.h>
 #include <string.h>
-// #define DEBUG
+#define DEBUG
 #define MAX_LEN 1009
 #define STACK_LEN 1009
 #define TER_SYM_NUM 6
@@ -120,14 +120,14 @@ void solve()
             printf("E\n");
             break;
         }
-        else if (cmpRes == -1)
+        else if (cmpRes == -1 || (cmpRes == 2 && sign == ')'))
         {
             push(1, sign);
             sptr++;
             updateTopTerSym();
             printf("I%c\n", sign);
         }
-        else if (cmpRes == 1 || (cmpRes == 2 && sign == ')'))
+        else if (cmpRes == 1)
         {
             if (reduce() == 0)
             {
