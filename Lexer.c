@@ -1,116 +1,166 @@
 #include <stdio.h>
 #include <string.h>
-#include <ctype.h>
-#include <stdlib.h>
-#define MAX_LEN 100
-FILE *fp;
-int len;
-char ch;
-char token[MAX_LEN];
-void addNul()
+// #define DEBUG
+#define MAX_LEN 1009
+#define STACK_LEN 1009
+#define TER_SYM_NUM 6
+
+int ptr;
+char topTerSym;
+char str[MAX_LEN], terSym[TER_SYM_NUM + 1] = "+*i()#";
+int preMat[6][6] = {
+    {1, -1, -1, -1, 1, 1},
+    {1, 1, -1, -1, 1, 1},
+    {1, 1, 0, 0, 1, 1},
+    {-1, -1, -1, -1, 2, 0},
+    {1, 1, 0, 0, 1, 1},
+    {-1, -1, -1, -1, 0, 2}}; // -1 below  1 above  0 undefined  2 equal
+struct CHAR
 {
-    token[len] = '\0';
-}
-void getch()
+    int type; // 0 non-terminal  1 terminal
+    char ch;
+} stack[1009];
+
+void updateTopTerSym()
 {
-    ch = fgetc(fp);
-}
-void cat()
-{
-    token[len++] = ch;
-}
-void ungetch()
-{
-    ungetc(ch, fp);
-}
-void reserve()
-{
-    addNul();
-    if (strcmp(token, "BEGIN") == 0)
-        printf("Begin\n");
-    else if (strcmp(token, "END") == 0)
-        printf("End\n");
-    else if (strcmp(token, "FOR") == 0)
-        printf("For\n");
-    else if (strcmp(token, "IF") == 0)
-        printf("If\n");
-    else if (strcmp(token, "THEN") == 0)
-        printf("Then\n");
-    else if (strcmp(token, "ELSE") == 0)
-        printf("Else\n");
-    else
-        printf("Ident(%s)\n", token);
-}
-void clearToken()
-{
-    len = 0;
-    memset(token, 0, sizeof(token));
-}
-int getNumber()
-{
-    addNul();
-    return atoi(token);
-}
-void error()
-{
-    printf("Unknown\n");
-    exit(0);
-}
-void getsym()
-{
-    clearToken();
-    do
-        getch();
-    while (isspace(ch));
-    if (isalpha(ch))
-    {
-        while (isalpha(ch) || isdigit(ch))
+    int i;
+    for (i = ptr - 1; i >= 0; i--)
+        if (stack[i].type == 1)
         {
-            cat();
-            getch();
+            topTerSym = stack[i].ch;
+            break;
         }
-        ungetch();
-        reserve();
-    }
-    else if (isdigit(ch))
-    {
-        while (isdigit(ch))
-        {
-            cat();
-            getch();
-        }
-        ungetch();
-        printf("Int(%d)\n", getNumber());
-    }
-    else if (ch == ':')
-    {
-        getch();
-        if (ch == '=')
-            printf("Assign\n");
-        else
-        {
-            ungetch();
-            printf("Colon\n");
-        }
-    }
-    else if (ch == '+')
-        printf("Plus\n");
-    else if (ch == '*')
-        printf("Star\n");
-    else if (ch == ',')
-        printf("Comma\n");
-    else if (ch == '(')
-        printf("LParenthesis\n");
-    else if (ch == ')')
-        printf("RParenthesis\n");
-    else if (!feof(fp))
-        error();
 }
-int main(int argc, char *argv[])
+int getTerSymNum(char ch)
 {
-    fp = fopen(argv[1], "r");
-    while (!feof(fp))
-        getsym();
-    fclose(fp);
+    int i;
+    for (i = 0; i < TER_SYM_NUM; i++)
+        if (terSym[i] == ch)
+            return i;
+    return -1;
+}
+int cmpTerSym(char ca, char cb)
+{
+    int na = getTerSymNum(ca), nb = getTerSymNum(cb);
+    if (na == -1 || nb == -1) // ca or cb isn't a terminal symbol
+        return -2;
+    return preMat[na][nb];
+}
+void push(int type, char ch)
+{
+    stack[ptr].type = type;
+    stack[ptr].ch = ch;
+    ptr++;
+}
+int pop(int *type, char *ch)
+{
+    if (--ptr == 0) // empty stack
+        return -1;
+    *type = stack[ptr].type;
+    *ch = stack[ptr].ch;
     return 0;
 }
+int reduce()
+{
+    int type;
+    char ch;
+    if (pop(&type, &ch) != 0)
+        return -1;
+    if (type == 0) // non-terminal
+    {
+        if (pop(&type, &ch) != 0 || type == 0)
+            return -1;
+        if (ch == '+' || ch == '*')
+        {
+            if (pop(&type, &ch) != 0 || type == 1)
+                return -1;
+            push(0, 'N'); // N+N or N*N
+            return 0;
+        }
+        else
+            return -1;
+    }
+    else if (type == 1) // terminal
+    {
+        if (ch == ')')
+        {
+            if (pop(&type, &ch) != 0 || type == 1)
+                return -1;
+            if (pop(&type, &ch) != 0 || type == 0 || ch != '(')
+                return -1;
+            push(0, 'N'); // (N)
+            return 0;
+        }
+        else if (ch == 'i')
+        {
+            push(0, 'N'); // i
+            return 0;
+        }
+        else
+            return -1;
+    }
+}
+void solve()
+{
+    strcat(str, "#");
+    int sptr = 0, len = strlen(str);
+    push(1, '#');
+    updateTopTerSym();
+    while (sptr < len)
+    {
+        char sign = str[sptr];
+        if (sign == '#' && sptr != len - 1)
+        {
+            printf("E\n");
+            break;
+        }
+        int cmpRes = cmpTerSym(topTerSym, sign);
+        if (cmpRes == -2 || cmpRes == 0)
+        {
+            printf("E\n");
+            break;
+        }
+        else if (cmpRes == -1)
+        {
+            push(1, sign);
+            sptr++;
+            updateTopTerSym();
+            printf("I%c\n", sign);
+        }
+        else if (cmpRes == 1 || (cmpRes == 2 && sign == ')'))
+        {
+            if (reduce() == 0)
+            {
+                printf("R\n");
+                updateTopTerSym();
+            }
+            else
+            {
+                printf("RE\n");
+                break;
+            }
+        }
+        else if (cmpRes == 2 && sign == '#')
+            sptr++;
+    }
+}
+
+#ifndef DEBUG
+int main(int argc, char *argv[])
+{
+    freopen(argv[1], "r", stdin);
+    scanf("%s", str);
+    solve();
+    fclose(stdin);
+    return 0;
+}
+#endif
+
+#ifdef DEBUG
+int main()
+{
+    scanf("%s", str);
+    solve();
+    return 0;
+}
+#endif
