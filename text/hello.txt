@@ -1,4 +1,0 @@
-begin
-    var a = 1;
-    print(a);
-end

@@ -33,7 +33,7 @@ public class Main
     public static void main(String[] args) throws FileNotFoundException
     {
 //        System.exit(1);
-        File fd = new File("text\\hello.txt");
+        File fd = new File("libs\\test.txt");
         Scanner scanner = new Scanner(fd);
         StringIter stringiter = new StringIter(scanner);
         Tokenizer tokenizer = new Tokenizer(stringiter);

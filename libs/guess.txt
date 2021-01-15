@@ -1,0 +1,20 @@
+fn main() -> void {
+    let needle: int;
+    let low: int = 0;
+    let high: int = 1024;
+    let mid: int;
+    needle = getint();
+    while low != high {
+        mid = (low + high + 1) / 2;
+        putint(mid);
+        putln();
+        if mid > needle {
+            high = mid;
+        } else if mid == needle {
+            low = mid;
+            high = mid;
+        } else {
+            low = mid;
+        }
+    }
+}
