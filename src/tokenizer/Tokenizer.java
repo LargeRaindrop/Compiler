@@ -230,7 +230,8 @@ public class Tokenizer {
     private Token lexChar() throws TokenizeError {
         Pos startPos = it.currentPos();
         it.nextChar();
-        char ch = it.nextChar(), value;
+        char ch = it.nextChar();
+        int value;
         if (ch == '\\') {
             ch = it.nextChar();
             switch (ch) {
