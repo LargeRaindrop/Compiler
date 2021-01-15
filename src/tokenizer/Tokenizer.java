@@ -19,14 +19,14 @@ public class Tokenizer {
      * @return
      * @throws TokenizeError 如果解析有异常则抛出
      */
-    public tokenizer.Token nextToken() throws TokenizeError {
+    public Token nextToken() throws TokenizeError {
         it.readAll();
 
         // 跳过之前的所有空白字符
         skipSpaceCharacters();
 
         if (it.isEOF()) {
-            return new tokenizer.Token(TokenType.EOF, "", it.currentPos(), it.currentPos());
+            return new Token(TokenType.EOF, "", it.currentPos(), it.currentPos());
         }
 
         char peek = it.peekChar();
@@ -39,7 +39,7 @@ public class Tokenizer {
         }
     }
 
-    private tokenizer.Token lexUInt() throws TokenizeError {
+    private Token lexUInt() throws TokenizeError {
         // 请填空：
         // 直到查看下一个字符不是数字为止:
         // -- 前进一个字符，并存储这个字符
@@ -55,7 +55,7 @@ public class Tokenizer {
         }
         try {
             int num = Integer.parseUnsignedInt(str.toString());
-            return new tokenizer.Token(TokenType.Uint, num, startPos, it.currentPos());
+            return new Token(TokenType.Uint, num, startPos, it.currentPos());
         }
         catch(Exception e) {
             throw new TokenizeError(ErrorCode.InvalidInput, startPos);
@@ -63,7 +63,7 @@ public class Tokenizer {
 //        throw new Error("Not implemented");
     }
 
-    private tokenizer.Token lexIdentOrKeyword() throws TokenizeError {
+    private Token lexIdentOrKeyword() throws TokenizeError {
         // 请填空：
         // 直到查看下一个字符不是数字或字母为止:
         // -- 前进一个字符，并存储这个字符
@@ -79,7 +79,7 @@ public class Tokenizer {
             str.append(it.nextChar());
         }
         String strr = str.toString();
-        tokenizer.Token token = new tokenizer.Token(null, strr, startPos, it.currentPos());
+        Token token = new Token(null, strr, startPos, it.currentPos());
         switch(strr) {
             case "begin":
                 token.setTokenType(TokenType.Begin);
@@ -103,38 +103,38 @@ public class Tokenizer {
 //        throw new Error("Not implemented");
     }
 
-    private tokenizer.Token lexOperatorOrUnknown() throws TokenizeError {
+    private Token lexOperatorOrUnknown() throws TokenizeError {
         switch (it.nextChar()) {
             case '+':
-                return new tokenizer.Token(TokenType.Plus, '+', it.previousPos(), it.currentPos());
+                return new Token(TokenType.Plus, '+', it.previousPos(), it.currentPos());
 
             case '-':
                 // 填入返回语句
-                return new tokenizer.Token(TokenType.Minus, '-', it.previousPos(), it.currentPos());
+                return new Token(TokenType.Minus, '-', it.previousPos(), it.currentPos());
 //                throw new Error("Not implemented");
 
             case '*':
                 // 填入返回语句
-                return new tokenizer.Token(TokenType.Mult, '*', it.previousPos(), it.currentPos());
+                return new Token(TokenType.Mult, '*', it.previousPos(), it.currentPos());
 //                throw new Error("Not implemented");
 
             case '/':
                 // 填入返回语句
-                return new tokenizer.Token(TokenType.Div, '/', it.previousPos(), it.currentPos());
+                return new Token(TokenType.Div, '/', it.previousPos(), it.currentPos());
 //                throw new Error("Not implemented");
 
             // 填入更多状态和返回语句
             case '=':
-                return new tokenizer.Token(TokenType.Equal, '=', it.previousPos(), it.currentPos());
+                return new Token(TokenType.Equal, '=', it.previousPos(), it.currentPos());
 
             case ';':
-                return new tokenizer.Token(TokenType.Semicolon, ';', it.previousPos(), it.currentPos());
+                return new Token(TokenType.Semicolon, ';', it.previousPos(), it.currentPos());
 
             case '(':
-                return new tokenizer.Token(TokenType.LParen, '(', it.previousPos(), it.currentPos());
+                return new Token(TokenType.LParen, '(', it.previousPos(), it.currentPos());
 
             case ')':
-                return new tokenizer.Token(TokenType.RParen, ')', it.previousPos(), it.currentPos());
+                return new Token(TokenType.RParen, ')', it.previousPos(), it.currentPos());
 
             default:
                 // 不认识这个输入，摸了

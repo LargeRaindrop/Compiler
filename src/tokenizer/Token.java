@@ -17,7 +17,7 @@ public class Token {
         this.endPos = endPos;
     }
 
-    public Token(tokenizer.Token token) {
+    public Token(Token token) {
         this.tokenType = token.tokenType;
         this.value = token.value;
         this.startPos = token.startPos;
@@ -30,7 +30,7 @@ public class Token {
             return true;
         if (o == null || getClass() != o.getClass())
             return false;
-        tokenizer.Token token = (tokenizer.Token) o;
+        Token token = (Token) o;
         return tokenType == token.tokenType && Objects.equals(value, token.value)
                 && Objects.equals(startPos, token.startPos) && Objects.equals(endPos, token.endPos);
     }
