@@ -1096,13 +1096,9 @@ public final class Analyser {
         else if (check(TokenType.SEMICOLON))
             analyseEmptyStmt();
         // break_stmt -> 'break' ';'
-        else if (check(TokenType.BREAK_KW)) {
-            analyseBreakStmt();
-        }
+        else if (check(TokenType.BREAK_KW)) {}
         // continue_stmt -> 'continue' ';'
-        else if (check(TokenType.CONTINUE_KW)) {
-            analyseContinueStmt();
-        }
+        else if (check(TokenType.CONTINUE_KW)) {}
         // expr_stmt -> expr ';'
         else
             analyseExprStmt();
@@ -1196,29 +1192,6 @@ public final class Analyser {
 
         Instruction instruction = new Instruction("br", 0);
         instructions.add(instruction);
-        int whileEnd = instructions.size();
-        instruction.setX(whileStart - whileEnd);
-
-        if (breakInstruction.size() != 0) {
-            for (BreakAndContinue b : breakInstruction) {
-                if (b.getWhileNum() == inCycle + 1)
-                    b.getInstruction().setX(whileEnd - b.getLocation());
-            }
-        }
-
-        if (continueInstruction.size() != 0) {
-            for (BreakAndContinue c : continueInstruction) {
-                if (c.getWhileNum() == inCycle + 1)
-                    c.getInstruction().setX(whileEnd - c.getLocation() - 1);
-            }
-        }
-
-        jumpInstruction.setX(whileEnd - index);
-
-        if (inCycle == 0) {
-            continueInstruction = new ArrayList<BreakAndContinue>();
-            breakInstruction = new ArrayList<BreakAndContinue>();
-        }
     }
 
 
@@ -1265,22 +1238,6 @@ public final class Analyser {
     private void analyseEmptyStmt() throws CompileError {
         expect(TokenType.SEMICOLON);
     }
-
-    /**
-     * break语句分析函数
-     * break_stmt -> 'break' ';'
-     *
-     * @throws CompileError
-     */
-    private void analyseBreakStmt() throws CompileError {}
-
-    /**
-     * continue语句分析函数
-     * continue_stmt -> 'continue' ';'
-     *
-     * @throws CompileError
-     */
-    private void analyseContinueStmt() throws CompileError {}
 
     /**
      * 表达式语句
