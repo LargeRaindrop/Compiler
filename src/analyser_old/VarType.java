@@ -1,9 +1,10 @@
-package analyser;
+package analyser_old;
 
 public enum VarType {
     Int,
     Double,
-    Void;
+    Void,
+    None;
 
     @Override
     public String toString() {
@@ -15,6 +16,8 @@ public enum VarType {
                 return "double";
             case Void:
                 return "void";
+            case None:
+                return "none";
             default:
                 return "InvalidVarType";
         }

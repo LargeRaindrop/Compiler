@@ -1,59 +1,43 @@
 package analyser;
 
 public class Global {
-    private String name;
-    private VarType type;
-    private boolean isConst;
-    private boolean isInit;
-//    private int stackOffset;
+    Integer isConst;
+    Integer cnt;
+    String items;
 
-    public Global() {}
-
-    public Global(String name, VarType type, boolean isConst, boolean isInit) {
-        this.name = name;
-        this.type = type;
+    public Global(Integer isConst){
         this.isConst = isConst;
-        this.isInit = isInit;
-//        this.stackOffset = stackOffset;
+        this.cnt = 0;
+        this.items = null;
     }
 
-    public String getName() {
-        return name;
+    public Global(Integer isConst, Integer cnt, String items){
+        this.isConst = isConst;
+        this.cnt = cnt;
+        this.items = items;
     }
 
-    public void setName(String name) {
-        this.name = name;
-    }
-
-    public VarType getType() {
-        return type;
-    }
-
-    public void setType(VarType type) {
-        this.type = type;
-    }
-
-    public boolean isConst() {
+    public Integer getIsConst() {
         return isConst;
     }
 
-    public void setConst(boolean aConst) {
-        isConst = aConst;
+    public void setIsConst(Integer isConst) {
+        this.isConst = isConst;
     }
 
-    public boolean isInit() {
-        return isInit;
+    public Integer getCnt() {
+        return cnt;
     }
 
-    public void setInit(boolean init) {
-        isInit = init;
+    public void setCnt(Integer cnt) {
+        this.cnt = cnt;
     }
 
-//    public int getStackOffset() {
-//        return stackOffset;
-//    }
-//
-//    public void setStackOffset(int stackOffset) {
-//        this.stackOffset = stackOffset;
-//    }
+    public String getItems() {
+        return items;
+    }
+
+    public void setItems(String items) {
+        this.items = items;
+    }
 }

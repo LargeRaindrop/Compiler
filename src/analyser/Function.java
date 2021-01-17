@@ -5,26 +5,24 @@ import instruction.Instruction;
 import java.util.List;
 
 public class Function {
-    private String name;
-    private VarType retType;
-//    private int stackOffset;
-    private int retSlots;
-    private int paramSlots;
-    private int locSlots;
-    private List<Instruction> body;
-    private List<Parameter> params;
+    String name;
+    Integer id;
+    Integer retSlots;
+    Integer paramSlots;
+    Integer locSlots;
+    List<Instruction> body;
+    int layer;
+    String retType;
 
-    public Function() {}
-
-    public Function(String name, VarType retType, int retSlots, int paramSlots, int locSlots, List<Instruction> body, List<Parameter> params) {
+    public Function(String name, Integer id, Integer retSlots, Integer paramSlots, Integer locSlots, List<Instruction> body, int layer, String retType){
         this.name = name;
-        this.retType = retType;
-//        this.stackOffset = stackOffset;
+        this.id = id;
         this.retSlots = retSlots;
         this.paramSlots = paramSlots;
         this.locSlots = locSlots;
         this.body = body;
-        this.params = params;
+        this.layer = layer;
+        this.retType = retType;
     }
 
     public String getName() {
@@ -35,43 +33,35 @@ public class Function {
         this.name = name;
     }
 
-    public VarType getRetType() {
-        return retType;
+    public Integer getId() {
+        return id;
     }
 
-    public void setRetType(VarType retType) {
-        this.retType = retType;
+    public void setId(Integer id) {
+        this.id = id;
     }
 
-//    public int getStackOffset() {
-//        return stackOffset;
-//    }
-//
-//    public void setStackOffset(int stackOffset) {
-//        this.stackOffset = stackOffset;
-//    }
-
-    public int getRetSlots() {
+    public Integer getRetSlots() {
         return retSlots;
     }
 
-    public void setRetSlots(int retSlots) {
+    public void setRetSlots(Integer retSlots) {
         this.retSlots = retSlots;
     }
 
-    public int getParamSlots() {
+    public Integer getParamSlots() {
         return paramSlots;
     }
 
-    public void setParamSlots(int paramSlots) {
+    public void setParamSlots(Integer paramSlots) {
         this.paramSlots = paramSlots;
     }
 
-    public int getLocSlots() {
+    public Integer getLocSlots() {
         return locSlots;
     }
 
-    public void setLocSlots(int locSlots) {
+    public void setLocSlots(Integer locSlots) {
         this.locSlots = locSlots;
     }
 
@@ -83,11 +73,19 @@ public class Function {
         this.body = body;
     }
 
-    public List<Parameter> getParams() {
-        return params;
+    public int getLayer() {
+        return layer;
     }
 
-    public void setParams(List<Parameter> params) {
-        this.params = params;
+    public void setLayer(int layer) {
+        this.layer = layer;
+    }
+
+    public String getRetType() {
+        return retType;
+    }
+
+    public void setRetType(String retType) {
+        this.retType = retType;
     }
 }

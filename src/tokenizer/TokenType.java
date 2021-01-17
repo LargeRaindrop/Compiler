@@ -37,6 +37,7 @@ public enum TokenType {
     COLON,          // :
     SEMICOLON,      // ;
 
+    FAN,            // 取反
     COMMENT,        // 注释
     IDENT,          // 标识符
     None,
@@ -114,6 +115,8 @@ public enum TokenType {
             case SEMICOLON:
                 return "SemicolonSign";
 
+            case FAN:
+                return "fan";
             case COMMENT:
                 return "Comment";
             case IDENT:

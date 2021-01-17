@@ -1,4 +1,4 @@
-package analyser;
+package analyser_old;
 
 public class Parameter {
     private String name;

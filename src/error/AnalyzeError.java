@@ -28,6 +28,11 @@ public class AnalyzeError extends CompileError {
         this.pos = pos;
     }
 
+    public AnalyzeError(ErrorCode code) {
+        this.code = code;
+        this.pos = null;
+    }
+
     @Override
     public String toString() {
         return new StringBuilder().append("Analyze Error: ").append(code).append(", at: ").append(pos).toString();
