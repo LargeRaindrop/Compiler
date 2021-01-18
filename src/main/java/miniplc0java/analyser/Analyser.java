@@ -98,14 +98,6 @@ public final class Analyser {
         return this.nextOffset++;
     }
 
-    private int getSymbolByName(String name) {
-        for (int i = 0; i < symbolTable.size(); i++) {
-            if (symbolTable.get(i).getName().equals(name))
-                return i;
-        }
-        return -1;
-    }
-
     private Symbol getSymbolByToken(Token token) {
         String name = (String) token.getValue();
         for (int i = symbolTable.size() - 1; i >= 0; i--) {
@@ -113,6 +105,14 @@ public final class Analyser {
                 return symbolTable.get(i);
         }
         return null;
+    }
+
+    private int getSymbolByName(String name) {
+        for (int i = 0; i < symbolTable.size(); i++) {
+            if (symbolTable.get(i).getName().equals(name))
+                return i;
+        }
+        return -1;
     }
 
     /**
@@ -283,14 +283,14 @@ public final class Analyser {
 
     }
 
-    private int getFunctionId(String name, List<Function> functionTable) {
+    private int getFuncId(String name, List<Function> functionTable) {
         for (int i = 0; i < functionTable.size(); i++) {
             if (functionTable.get(i).getName().equals(name)) return i;
         }
         return -1;
     }
 
-    private boolean functionHasReturn(String name, List<Function> functionTable) {
+    private boolean funcRet(String name, List<Function> functionTable) {
         if (name.equals("getint") || name.equals("getdouble") || name.equals("getchar"))
             return true;
         for (Function function : functionTable) {
@@ -299,6 +299,17 @@ public final class Analyser {
             }
         }
         return false;
+    }
+
+    private static long convertToDec(String a) {
+        long aws = 0;
+        long xi = 1;
+        for (int i = a.length() - 1; i >= 0; i--) {
+            if (a.charAt(i) == '1')
+                aws += xi;
+            xi *= 2;
+        }
+        return aws;
     }
 
     private void analyseProgram() throws CompileError {
@@ -400,53 +411,6 @@ public final class Analyser {
         }
     }
 
-    private void analyseConstDeclStmt() throws CompileError {
-        // const_decl_stmt -> 'const' IDENT ':' ty '=' expr ';'
-        String name;
-        String type;
-        boolean isInitialized = true;
-        List<Symbol> params = null;
-        String exprType;
-        Token ident;
-        Instruction instruction;
-
-        expect(TokenType.CONST_KW);
-        ident = expect(TokenType.IDENT);
-        name = (String) ident.getValue();
-        expect(TokenType.COLON);
-        type = analyseType();
-        if (type.equals("void"))
-            throw new AnalyzeError(ErrorCode.CompileError, peekedToken.getStartPos());
-
-        if (layer == 1) {
-            instruction = new Instruction(OprType.globa, globalCnt);
-            instructions.add(instruction);
-        } else {
-            instruction = new Instruction(OprType.loca, localCnt);
-            instructions.add(instruction);
-        }
-        expect(TokenType.ASSIGN);
-        exprType = analyseExpr();
-        while (!op.empty())
-            generateOprIns(op.pop(), instructions, exprType);
-
-        instruction = new Instruction(OprType.store64, -1);
-        instructions.add(instruction);
-
-        expect(TokenType.SEMICOLON);
-        if (exprType.equals(type))
-            if (layer == 1)
-                addSymbol(name, true, type, isInitialized, layer, params, "", ident.getStartPos(), -1, null, -1, globalCnt);
-            else
-                addSymbol(name, true, type, isInitialized, layer, params, "", ident.getStartPos(), -1, null, localCnt, -1);
-        else throw new AnalyzeError(ErrorCode.CompileError, peekedToken.getStartPos());
-
-        if (layer == 1) {
-            Global global = new Global(1);
-            globalTable.add(global);
-        }
-    }
-
     private String analyseType() throws CompileError {
         Token tt = peek();
         if (tt.getValue().equals("void") || tt.getValue().equals("int") || tt.getValue().equals("double")) {
@@ -526,21 +490,68 @@ public final class Analyser {
             throw new AnalyzeError(ErrorCode.CompileError, peekedToken.getStartPos());
     }
 
-    private String analyseNegateExpr() throws CompileError {
-        // negate_expr -> '-' expr
-        expect(TokenType.MINUS);
-        op.push(TokenType.FAN);
-        String type = analyseExpr();
-        if (!type.equals("int") && !type.equals("double"))
+    private Token analyseBinaryOperator() throws CompileError {
+        if (check(TokenType.AS_KW) ||
+                check(TokenType.PLUS) ||
+                check(TokenType.MINUS) ||
+                check(TokenType.MUL) ||
+                check(TokenType.DIV) ||
+                check(TokenType.EQ) ||
+                check(TokenType.NEQ) ||
+                check(TokenType.LT) ||
+                check(TokenType.GT) ||
+                check(TokenType.LE) ||
+                check(TokenType.GE)) {
+            return next();
+        } else
+            throw new AnalyzeError(ErrorCode.CompileError, peekedToken.getStartPos());
+    }
+
+    private void analyseConstDeclStmt() throws CompileError {
+        // const_decl_stmt -> 'const' IDENT ':' ty '=' expr ';'
+        String name;
+        String type;
+        boolean isInitialized = true;
+        List<Symbol> params = null;
+        String exprType;
+        Token ident;
+        Instruction instruction;
+
+        expect(TokenType.CONST_KW);
+        ident = expect(TokenType.IDENT);
+        name = (String) ident.getValue();
+        expect(TokenType.COLON);
+        type = analyseType();
+        if (type.equals("void"))
             throw new AnalyzeError(ErrorCode.CompileError, peekedToken.getStartPos());
 
-        if (!op.empty()) {
-            int in = Operator.getPos(op.peek());
-            int out = Operator.getPos(TokenType.FAN);
-            if (Operator.getPriMatrix()[in][out] > 0)
-                generateOprIns(op.pop(), instructions, type);
+        if (layer == 1) {
+            instruction = new Instruction(OprType.globa, globalCnt);
+            instructions.add(instruction);
+        } else {
+            instruction = new Instruction(OprType.loca, localCnt);
+            instructions.add(instruction);
         }
-        return type;
+        expect(TokenType.ASSIGN);
+        exprType = analyseExpr();
+        while (!op.empty())
+            generateOprIns(op.pop(), instructions, exprType);
+
+        instruction = new Instruction(OprType.store64, -1);
+        instructions.add(instruction);
+
+        expect(TokenType.SEMICOLON);
+        if (exprType.equals(type))
+            if (layer == 1)
+                addSymbol(name, true, type, isInitialized, layer, params, "", ident.getStartPos(), -1, null, -1, globalCnt);
+            else
+                addSymbol(name, true, type, isInitialized, layer, params, "", ident.getStartPos(), -1, null, localCnt, -1);
+        else throw new AnalyzeError(ErrorCode.CompileError, peekedToken.getStartPos());
+
+        if (layer == 1) {
+            Global global = new Global(1);
+            globalTable.add(global);
+        }
     }
 
     private String analyseAssignExpr(Symbol symbol, Token ident) throws CompileError {
@@ -575,6 +586,23 @@ public final class Analyser {
             throw new AnalyzeError(ErrorCode.CompileError, peekedToken.getStartPos());
     }
 
+    private String analyseNegateExpr() throws CompileError {
+        // negate_expr -> '-' expr
+        expect(TokenType.MINUS);
+        op.push(TokenType.FAN);
+        String type = analyseExpr();
+        if (!type.equals("int") && !type.equals("double"))
+            throw new AnalyzeError(ErrorCode.CompileError, peekedToken.getStartPos());
+
+        if (!op.empty()) {
+            int in = Operator.getPos(op.peek());
+            int out = Operator.getPos(TokenType.FAN);
+            if (Operator.getPriMatrix()[in][out] > 0)
+                generateOprIns(op.pop(), instructions, type);
+        }
+        return type;
+    }
+
     private String analyseCallExpr(Symbol symbol, Token ident, boolean isLibrary) throws CompileError {
         // call_expr -> IDENT '(' call_param_list? ')'
         Instruction instruction;
@@ -586,7 +614,7 @@ public final class Analyser {
         } else {
             if (!symbol.getType().equals("function"))
                 throw new AnalyzeError(ErrorCode.CompileError, ident.getStartPos());
-            int id = getFunctionId(symbol.getName(), funcTable);
+            int id = getFuncId(symbol.getName(), funcTable);
             instruction = new Instruction(OprType.call, id + 1);
         }
 
@@ -594,7 +622,7 @@ public final class Analyser {
         expect(TokenType.L_PAREN);
         op.push(TokenType.L_PAREN);
 
-        if (functionHasReturn(name, funcTable))
+        if (funcRet(name, funcTable))
             instructions.add(new Instruction(OprType.stackalloc, 1));
         else
             instructions.add(new Instruction(OprType.stackalloc, 0));
@@ -711,7 +739,7 @@ public final class Analyser {
         } else if (check(TokenType.DOUBLE_LITERAL)) {
             Token token = next();
             String binary = Long.toBinaryString(Double.doubleToRawLongBits((Double) token.getValue()));
-            Instruction instruction = new Instruction(OprType.push, toTen(binary));
+            Instruction instruction = new Instruction(OprType.push, convertToDec(binary));
             instructions.add(instruction);
             return "double";
         } else if (check(TokenType.STRING_LITERAL)) {
@@ -730,17 +758,6 @@ public final class Analyser {
             throw new AnalyzeError(ErrorCode.CompileError, peekedToken.getStartPos());
     }
 
-    public static long toTen(String a) {
-        long aws = 0;
-        long xi = 1;
-        for (int i = a.length() - 1; i >= 0; i--) {
-            if (a.charAt(i) == '1')
-                aws += xi;
-            xi *= 2;
-        }
-        return aws;
-    }
-
     private String analyseGroupExpr() throws CompileError {
         // group_expr -> '(' expr ')'
         expect(TokenType.L_PAREN);
@@ -753,22 +770,6 @@ public final class Analyser {
 
         op.pop();
         return exprType;
-    }
-
-    private String analyseAsExpr(String exprType) throws CompileError {
-        // as_expr -> expr 'as' ty
-        expect(TokenType.AS_KW);
-        String rightType = analyseType();
-        if (exprType.equals("int") && rightType.equals("double")) {
-            instructions.add(new Instruction(OprType.itof, -1));
-            return "double";
-        } else if (exprType.equals("double") && rightType.equals("int")) {
-            instructions.add(new Instruction(OprType.ftoi, -1));
-            return "int";
-        } else if (exprType.equals(rightType)) {
-            return exprType;
-        } else
-            throw new AnalyzeError(ErrorCode.CompileError, peekedToken.getStartPos());
     }
 
     private String analyseOperatorExpr(String exprType) throws CompileError {
@@ -788,23 +789,6 @@ public final class Analyser {
         if (exprType.equals(type) && (exprType.equals("int") || exprType.equals("double")))
             return type;
         else
-            throw new AnalyzeError(ErrorCode.CompileError, peekedToken.getStartPos());
-    }
-
-    private Token analyseBinaryOperator() throws CompileError {
-        if (check(TokenType.AS_KW) ||
-                check(TokenType.PLUS) ||
-                check(TokenType.MINUS) ||
-                check(TokenType.MUL) ||
-                check(TokenType.DIV) ||
-                check(TokenType.EQ) ||
-                check(TokenType.NEQ) ||
-                check(TokenType.LT) ||
-                check(TokenType.GT) ||
-                check(TokenType.LE) ||
-                check(TokenType.GE)) {
-            return next();
-        } else
             throw new AnalyzeError(ErrorCode.CompileError, peekedToken.getStartPos());
     }
 
@@ -855,16 +839,6 @@ public final class Analyser {
         globalTable.add(global);
     }
 
-    private void analyseFunctionParamList(List<Symbol> params, Symbol symbol) throws CompileError {
-        // function_param_list -> function_param (',' function_param)*
-        int i = 0;
-        params.add(analyseFunctionParam(i, symbol));
-        while (check(TokenType.COMMA)) {
-            next();
-            params.add(analyseFunctionParam(++i, symbol));
-        }
-    }
-
     private Symbol analyseFunctionParam(int i, Symbol symbol) throws CompileError {
         // function_param -> 'const'? IDENT ':' ty
         String name;
@@ -883,6 +857,16 @@ public final class Analyser {
         name = (String) ident.getValue();
         addSymbol(name, isConst, type, isInitialized, layer + 1, null, "", ident.getStartPos(), i, symbol, -1, -1);
         return getSymbolByToken(ident);
+    }
+
+    private void analyseFunctionParamList(List<Symbol> params, Symbol symbol) throws CompileError {
+        // function_param_list -> function_param (',' function_param)*
+        int i = 0;
+        params.add(analyseFunctionParam(i, symbol));
+        while (check(TokenType.COMMA)) {
+            next();
+            params.add(analyseFunctionParam(++i, symbol));
+        }
     }
 
     private void analyseBlockStmt() throws CompileError {
@@ -1054,27 +1038,43 @@ public final class Analyser {
         expect(TokenType.SEMICOLON);
     }
 
-    public List<Global> getGlobalTable() {
+    private String analyseAsExpr(String exprType) throws CompileError {
+        // as_expr -> expr 'as' ty
+        expect(TokenType.AS_KW);
+        String rightType = analyseType();
+        if (exprType.equals("int") && rightType.equals("double")) {
+            instructions.add(new Instruction(OprType.itof, -1));
+            return "double";
+        } else if (exprType.equals("double") && rightType.equals("int")) {
+            instructions.add(new Instruction(OprType.ftoi, -1));
+            return "int";
+        } else if (exprType.equals(rightType)) {
+            return exprType;
+        } else
+            throw new AnalyzeError(ErrorCode.CompileError, peekedToken.getStartPos());
+    }
+
+    private List<Global> getGlobalTable() {
         return globalTable;
     }
 
-    public void setGlobalTable(List<Global> globalTable) {
+    private void setGlobalTable(List<Global> globalTable) {
         this.globalTable = globalTable;
     }
 
-    public List<Function> getFuncTable() {
+    private List<Function> getFuncTable() {
         return funcTable;
     }
 
-    public void setFuncTable(List<Function> funcTable) {
+    private void setFuncTable(List<Function> funcTable) {
         this.funcTable = funcTable;
     }
 
-    public Function get_start() {
+    private Function get_start() {
         return _start;
     }
 
-    public void set_start(Function _start) {
+    private void set_start(Function _start) {
         this._start = _start;
     }
 
