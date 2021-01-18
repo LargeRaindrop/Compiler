@@ -8,7 +8,6 @@ import miniplc0java.instruction.OprType;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Map;
 
 public class Output {
     List<Global> globalTable;
@@ -33,12 +32,12 @@ public class Output {
 
         for (Global global : globalTable) {
             addInt(1, global.getIsConst());
-            if (global.getItems() == null) {
+            if (global.getItem() == null) {
                 addInt(4, 8);
                 addLong(8, 0L);
             } else {
-                addInt(4, global.getItems().length());
-                addString(global.getItems());
+                addInt(4, global.getItem().length());
+                addString(global.getItem());
             }
         }
 

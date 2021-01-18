@@ -3,18 +3,18 @@ package miniplc0java.analyser;
 public class Global {
     Integer isConst;
     Integer cnt;
-    String items;
+    String item;
 
     public Global(Integer isConst){
         this.isConst = isConst;
         this.cnt = 0;
-        this.items = null;
+        this.item = null;
     }
 
-    public Global(Integer isConst, Integer cnt, String items){
+    public Global(Integer isConst, Integer cnt, String item){
         this.isConst = isConst;
         this.cnt = cnt;
-        this.items = items;
+        this.item = item;
     }
 
     public Integer getIsConst() {
@@ -33,12 +33,12 @@ public class Global {
         this.cnt = cnt;
     }
 
-    public String getItems() {
-        return items;
+    public String getItem() {
+        return item;
     }
 
-    public void setItems(String items) {
-        this.items = items;
+    public void setItem(String item) {
+        this.item = item;
     }
 
     @Override
@@ -46,6 +46,6 @@ public class Global {
         return "Global: " +
                 "isConst=" + isConst +
                 ", count=" + cnt +
-                ", items=" + items;
+                ", items=" + item;
     }
 }
