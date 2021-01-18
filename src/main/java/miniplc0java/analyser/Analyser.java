@@ -38,19 +38,21 @@ public final class Analyser {
     }
 
     private Token peek() throws TokenizeError {
+        return _peek();
+    }
+
+    private Token _peek() throws TokenizeError {
         if (peekedToken == null) {
             peekedToken = tokenizer.nextToken();
         }
         return peekedToken;
     }
 
-    /**
-     * 获取下一个 Token
-     *
-     * @return
-     * @throws TokenizeError
-     */
     private Token next() throws TokenizeError {
+        return _next();
+    }
+
+    private Token _next() throws TokenizeError {
         if (peekedToken != null) {
             Token token = peekedToken;
             peekedToken = null;
@@ -60,27 +62,20 @@ public final class Analyser {
         }
     }
 
-    /**
-     * 如果下一个 token 的类型是 tt，则返回 true
-     *
-     * @param tt
-     * @return
-     * @throws TokenizeError
-     */
     private boolean check(TokenType tt) throws TokenizeError {
+        return _check(tt);
+    }
+
+    private boolean _check(TokenType tt) throws TokenizeError {
         Token token = peek();
         return token.getTokenType() == tt;
     }
 
-
-    /**
-     * 如果下一个 token 的类型是 tt，则前进一个 token 并返回，否则抛出异常
-     *
-     * @param tt 类型
-     * @return 这个 token
-     * @throws CompileError 如果类型不匹配
-     */
     private Token expect(TokenType tt) throws CompileError {
+        return _expect(tt);
+    }
+
+    private Token _expect(TokenType tt) throws CompileError {
         Token token = peek();
         if (token.getTokenType() == tt) {
             return next();
@@ -89,11 +84,6 @@ public final class Analyser {
         }
     }
 
-    /**
-     * 获取下一个变量的栈偏移
-     *
-     * @return
-     */
     private int getNextVariableOffset() {
         return this.nextOffset++;
     }
@@ -115,18 +105,6 @@ public final class Analyser {
         return -1;
     }
 
-    /**
-     * 添加一个符号
-     *
-     * @param name          名字
-     * @param type          类型
-     * @param isInitialized 是否已赋值
-     * @param layer         当前层数，遇到函数则+1
-     * @param params        函数的参数列表
-     * @param curPos        当前 token 的位置（报错用）
-     * @param returnType    函数的返回类型
-     * @param isParam       该符号是参数吗
-     */
     private void addSymbol(String name, boolean isConst, String type, boolean isInitialized, int layer, List<Symbol> params, String returnType, Pos curPos, int isParam, Symbol function, int localId, int globalId) throws AnalyzeError {
         int same = getSymbolByName(name);
         if (same == -1)
@@ -139,13 +117,6 @@ public final class Analyser {
         }
     }
 
-    /**
-     * 设置符号为已赋值
-     *
-     * @param name   符号名称
-     * @param curPos 当前位置（报错用）
-     * @throws AnalyzeError 如果未定义则抛异常
-     */
     private void initializeSymbol(String name, Pos curPos) throws AnalyzeError {
         int position = getSymbolByName(name);
         if (position == -1) {
