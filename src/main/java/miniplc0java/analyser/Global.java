@@ -46,7 +46,6 @@ public class Global {
         return "Global: " +
                 "isConst=" + isConst +
                 ", count=" + cnt +
-                ", items=" + items +
-                "}";
+                ", items=" + items;
     }
 }

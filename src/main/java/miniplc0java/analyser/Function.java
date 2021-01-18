@@ -14,7 +14,7 @@ public class Function {
     int layer;
     String retType;
 
-    public Function(String name, Integer id, Integer retSlots, Integer paramSlots, Integer locSlots, List<Instruction> body, int layer, String retType){
+    public Function(String name, Integer id, Integer retSlots, Integer paramSlots, Integer locSlots, List<Instruction> body, int layer, String retType) {
         this.name = name;
         this.id = id;
         this.retSlots = retSlots;
@@ -91,15 +91,17 @@ public class Function {
 
     @Override
     public String toString() {
-        return "Function: " +
+        String str = "Function: " +
                 "name=" + name +
-                "id=" + id +
-                "retSlots=" + retSlots +
-                "paramSlots=" + paramSlots +
-                "locSlots=" + locSlots +
-                "body=" + body +
-                "layer=" + layer +
-                "returnType=" + retType +
-                "}";
+                ", id=" + id +
+                ", retSlots=" + retSlots +
+                ", paramSlots=" + paramSlots +
+                ", locSlots=" + locSlots +
+                ", layer=" + layer +
+                ", returnType=" + retType +
+                "\n";
+        for (Instruction ins : body)
+            str += ins + "\n";
+        return str;
     }
 }

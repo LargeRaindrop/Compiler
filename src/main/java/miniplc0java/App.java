@@ -39,17 +39,24 @@ public class App
     public static void main(String[] args) throws FileNotFoundException
     {
 //        System.exit(1);
-        File fd = new File("..\\libs\\calc.txt");
+        File fd = new File("libs\\calc.txt");
         Scanner scanner = new Scanner(fd);
         StringIter stringiter = new StringIter(scanner);
         Tokenizer tokenizer = new Tokenizer(stringiter);
 //        lexer(tokenizer);
         Analyser analyser = new Analyser(tokenizer);
+        try {
+            analyser.analyse();
+        }
+        catch (Exception e) {
+            System.exit(1);
+        }
         List<Global> globals = analyser.getGlobalTable();
         List<Function> funcs = analyser.getFunctionTable();
         System.out.println("Globals: " + globals.size());
         for (Global global: globals)
             System.out.println(global);
+        System.out.println("\n" + analyser.get_start());
         System.out.println("Functions: " + funcs.size());
         for (Function func: funcs)
             System.out.println(func);

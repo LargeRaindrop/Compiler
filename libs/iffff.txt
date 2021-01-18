@@ -1,0 +1,30 @@
+fn main() -> void {
+    if 114514 {
+        if 1919810 {
+            if 1 != 2 {
+                if 3 == 3 {
+                    while 114 {
+                        while 514 {
+                            while 2 > -1 {
+                                while 1 < 19 {
+                                    while 3 >= 3 {
+                                        while 5 <= 5 {
+                                            if 0 {
+                                                while 1 {
+                                                    putint(1919);
+                                                }
+                                            } else {
+                                                putint(810);
+                                            }
+                                            return;
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        }
+    }
+}
