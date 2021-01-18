@@ -7,7 +7,7 @@ import miniplc0java.tokenizer.StringIter;
 import miniplc0java.tokenizer.Token;
 import miniplc0java.tokenizer.TokenType;
 import miniplc0java.tokenizer.Tokenizer;
-import miniplc0java.util.Output;
+import miniplc0java.util.Out;
 
 import java.io.File;
 import java.io.FileNotFoundException;
@@ -76,9 +76,9 @@ public class App
         for (Function func: funcs)
             System.out.println(func);
 
-        Output output = new Output(globals, funcs, _start);
-        output.transfer();
-        byte[] ans = output.get_output();
+        Out out = new Out(globals, funcs, _start);
+        out.perform();
+        byte[] ans = out.get_output();
 
         FileOutputStream fops;
         if (DEBUG)

@@ -9,25 +9,22 @@ import miniplc0java.instruction.OprType;
 import java.util.ArrayList;
 import java.util.List;
 
-public class Output {
+public class Out {
     List<Global> globalTable;
-    List<Function> functionTable;
+    List<Function> funcTable;
     Function _start;
     List<Byte> output;
-    int magic = 0x72303b3e;
-    int version = 0x00000001;
 
-    public Output(List<Global> globalTable, List<Function> functionTable, Function _start) {
+    public Out(List<Global> globalTable, List<Function> funcTable, Function _start) {
         this.globalTable = globalTable;
-        this.functionTable = functionTable;
+        this.funcTable = funcTable;
         this._start = _start;
         this.output = new ArrayList<>();
     }
 
-    public void transfer() {
-        addInt(4, magic);
-        addInt(4, version);
-
+    public void perform() {
+        addInt(4, 0x72303b3e); // magic
+        addInt(4, 0x00000001); // version
         addInt(4, globalTable.size());
 
         for (Global global : globalTable) {
@@ -41,15 +38,15 @@ public class Output {
             }
         }
 
-        addInt(4, functionTable.size() + 1);
+        addInt(4, funcTable.size() + 1);
 
-        transferFunction(_start);
+        funcPerform(_start);
 
-        for (Function function : functionTable)
-            transferFunction(function);
+        for (Function function : funcTable)
+            funcPerform(function);
     }
 
-    private void transferFunction(Function function) {
+    private void funcPerform(Function function) {
         addInt(4, function.getId());
         addInt(4, function.getRetSlots());
         addInt(4, function.getParamSlots());
@@ -69,25 +66,6 @@ public class Output {
         }
     }
 
-    private void addInt(int length, int x) {
-        int start = 8 * (length - 1);
-        for (int i = 0; i < length; i++) {
-            int part = x >> (start - i * 8) & 0xFF;
-            byte b = (byte) part;
-            output.add(b);
-        }
-    }
-
-    private void addLong(int length, long x) {
-        int start = 8 * (length - 1);
-        for (int i = 0; i < length; i++) {
-            long part = x >> (start - i * 8) & 0xFF;
-            byte b = (byte) part;
-            output.add(b);
-        }
-    }
-
-
     private void addString(String x) {
         for (int i = 0; i < x.length(); i++) {
             char c = x.charAt(i);
@@ -95,9 +73,27 @@ public class Output {
         }
     }
 
+    private void addInt(int len, int x) {
+        int start = 8 * (len - 1);
+        for (int i = 0; i < len; i++) {
+            int part = x >> (start - i * 8) & 0xFF;
+            byte b = (byte) part;
+            output.add(b);
+        }
+    }
+
+    private void addLong(int len, long x) {
+        int start = 8 * (len - 1);
+        for (int i = 0; i < len; i++) {
+            long part = x >> (start - i * 8) & 0xFF;
+            byte b = (byte) part;
+            output.add(b);
+        }
+    }
+
     public byte[] get_output() {
         byte[] _output = new byte[output.size()];
-        for (int i = 0; i < output.size() ; i++)
+        for (int i = 0; i < output.size(); i++)
             _output[i] = output.get(i);
         return _output;
     }
