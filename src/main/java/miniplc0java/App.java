@@ -19,7 +19,7 @@ import java.util.Scanner;
 public class App
 {
     static boolean DEBUG = false;
-    static String fileName = "calc";
+    static String fileName = "gcd";
     static String inFile = "libs\\" + fileName + ".txt";
     static String outFile = "result\\" + fileName + ".o0";
 
