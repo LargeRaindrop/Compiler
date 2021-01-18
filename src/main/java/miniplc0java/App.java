@@ -49,7 +49,7 @@ public class App
         if (DEBUG)
             fd = new File(inFile);
         else
-            fd = new File(args[0]);
+            fd = new File(args[1]);
 
         Scanner scanner = new Scanner(fd);
         StringIter stringiter = new StringIter(scanner);
@@ -81,7 +81,7 @@ public class App
         if (DEBUG)
             fops = new FileOutputStream(outFile);
         else
-            fops = new FileOutputStream(args[1]);
+            fops = new FileOutputStream(args[3]);
         try {
             fops.write(ans);
         }
