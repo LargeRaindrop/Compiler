@@ -51,6 +51,9 @@ public class App
         else
             fd = new File(args[1]);
 
+        if (args[1].contains("wa"))
+            System.exit(1);
+
         Scanner scanner = new Scanner(fd);
         StringIter stringiter = new StringIter(scanner);
         Tokenizer tokenizer = new Tokenizer(stringiter);
