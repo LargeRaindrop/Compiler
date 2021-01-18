@@ -312,8 +312,12 @@ public final class Analyser {
         return aws;
     }
 
-    private void analyseProgram() throws CompileError {
+    private void initInstructions() {
         instructions = new ArrayList<>();
+    }
+
+    private void analyseProgram() throws CompileError {
+        initInstructions();
         // program -> decl_stmt* function*
         // decl_stmt -> let_decl_stmt | const_decl_stmt
         while (check(TokenType.LET_KW) || check(TokenType.CONST_KW))
@@ -322,7 +326,7 @@ public final class Analyser {
         List<Instruction> initInstructions = instructions;
         // function -> 'fn' IDENT '(' function_param_list? ')' '->' ty block_stmt
         while (check(TokenType.FN_KW)) {
-            instructions = new ArrayList<>();
+            initInstructions();
             analyseFunction();
             globalCnt++;
             funcCnt++;
