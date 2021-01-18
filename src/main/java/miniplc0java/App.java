@@ -7,15 +7,22 @@ import miniplc0java.tokenizer.StringIter;
 import miniplc0java.tokenizer.Token;
 import miniplc0java.tokenizer.TokenType;
 import miniplc0java.tokenizer.Tokenizer;
+import miniplc0java.util.Output;
 
 import java.io.File;
 import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Scanner;
 
 public class App
 {
+    static boolean DEBUG = true;
+    static String fileName = "calc";
+    static String inFile = "libs\\" + fileName + ".txt";
+    static String outFile = "result\\" + fileName + ".o0";
+
     public static void lexer(Tokenizer tokenizer)
     {
         ArrayList<Token> tokens = new ArrayList<Token>();
@@ -38,8 +45,12 @@ public class App
 
     public static void main(String[] args) throws FileNotFoundException
     {
-//        System.exit(1);
-        File fd = new File("libs\\calc.txt");
+        File fd;
+        if (DEBUG)
+            fd = new File(inFile);
+        else
+            fd = new File(args[0]);
+
         Scanner scanner = new Scanner(fd);
         StringIter stringiter = new StringIter(scanner);
         Tokenizer tokenizer = new Tokenizer(stringiter);
@@ -56,9 +67,26 @@ public class App
         System.out.println("Globals: " + globals.size());
         for (Global global: globals)
             System.out.println(global);
-        System.out.println("\n" + analyser.get_start());
+        Function _start = analyser.get_start();
+        System.out.println("\n" + _start);
         System.out.println("Functions: " + funcs.size());
         for (Function func: funcs)
             System.out.println(func);
+
+        Output output = new Output(globals, funcs, _start);
+        output.transfer();
+        byte[] ans = output.get_output();
+
+        FileOutputStream fops;
+        if (DEBUG)
+            fops = new FileOutputStream(outFile);
+        else
+            fops = new FileOutputStream(args[1]);
+        try {
+            fops.write(ans);
+        }
+        catch (Exception e) {
+            System.exit(1);
+        }
     }
 }
