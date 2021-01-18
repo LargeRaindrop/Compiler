@@ -1029,23 +1029,23 @@ public final class Analyser {
             throw new AnalyzeError(ErrorCode.CompileError, peekedToken.getStartPos());
     }
 
-    private List<Global> getGlobalTable() {
+    public List<Global> getGlobalTable() {
         return globalTable;
     }
 
-    private void setGlobalTable(List<Global> globalTable) {
+    public void setGlobalTable(List<Global> globalTable) {
         this.globalTable = globalTable;
     }
 
-    private List<Function> getFuncTable() {
+    public List<Function> getFuncTable() {
         return funcTable;
     }
 
-    private void setFuncTable(List<Function> funcTable) {
+    public void setFuncTable(List<Function> funcTable) {
         this.funcTable = funcTable;
     }
 
-    private Function get_start() {
+    public Function get_start() {
         return _start;
     }
 
