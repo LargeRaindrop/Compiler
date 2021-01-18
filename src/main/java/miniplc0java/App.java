@@ -66,7 +66,7 @@ public class App
             System.exit(1);
         }
         List<Global> globals = analyser.getGlobalTable();
-        List<Function> funcs = analyser.getFunctionTable();
+        List<Function> funcs = analyser.getFuncTable();
         System.out.println("Globals: " + globals.size());
         for (Global global: globals)
             System.out.println(global);
