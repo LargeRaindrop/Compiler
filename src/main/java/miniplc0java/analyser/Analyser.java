@@ -2,6 +2,7 @@ package miniplc0java.analyser;
 
 import miniplc0java.error.*;
 import miniplc0java.instruction.Instruction;
+import miniplc0java.instruction.OprType;
 import miniplc0java.tokenizer.Token;
 import miniplc0java.tokenizer.TokenType;
 import miniplc0java.tokenizer.Tokenizer;
@@ -179,120 +180,120 @@ public final class Analyser {
         switch (calculate) {
             case FAN:
                 if(type.equals("int"))
-                    instruction = new Instruction("neg.i", -1);
+                    instruction = new Instruction(OprType.negi, -1);
                 else if(type.equals("double"))
-                    instruction = new Instruction("neg.f", -1);
+                    instruction = new Instruction(OprType.negf, -1);
                 else
                     throw new AnalyzeError(ErrorCode.InvalidInput);
                 instructions.add(instruction);
                 break;
             case PLUS:
                 if(type.equals("int"))
-                    instruction = new Instruction("add.i", -1);
+                    instruction = new Instruction(OprType.addi, -1);
                 else if(type.equals("double"))
-                    instruction = new Instruction("add.f", -1);
+                    instruction = new Instruction(OprType.addf, -1);
                 else
                     throw new AnalyzeError(ErrorCode.InvalidInput);
                 instructions.add(instruction);
                 break;
             case MINUS:
                 if(type.equals("int"))
-                    instruction = new Instruction("sub.i", -1);
+                    instruction = new Instruction(OprType.subi, -1);
                 else if(type.equals("double"))
-                    instruction = new Instruction("sub.f", -1);
+                    instruction = new Instruction(OprType.subf, -1);
                 else
                     throw new AnalyzeError(ErrorCode.InvalidInput);
                 instructions.add(instruction);
                 break;
             case MUL:
                 if(type.equals("int"))
-                    instruction = new Instruction("mul.i", -1);
+                    instruction = new Instruction(OprType.muli, -1);
                 else if(type.equals("double"))
-                    instruction = new Instruction("mul.f", -1);
+                    instruction = new Instruction(OprType.mulf, -1);
                 else
                     throw new AnalyzeError(ErrorCode.InvalidInput);
                 instructions.add(instruction);
                 break;
             case DIV:
                 if(type.equals("int"))
-                    instruction = new Instruction("div.i", -1);
+                    instruction = new Instruction(OprType.divi, -1);
                 else if(type.equals("double"))
-                    instruction = new Instruction("div.f", -1);
+                    instruction = new Instruction(OprType.divf, -1);
                 else
                     throw new AnalyzeError(ErrorCode.InvalidInput);
                 instructions.add(instruction);
                 break;
             case EQ:
                 if(type.equals("int"))
-                    instruction = new Instruction("cmp.i", -1);
+                    instruction = new Instruction(OprType.cmpi, -1);
                 else if(type.equals("double"))
-                    instruction = new Instruction("cmp.f", -1);
+                    instruction = new Instruction(OprType.cmpf, -1);
                 else
                     throw new AnalyzeError(ErrorCode.InvalidInput);
                 instructions.add(instruction);
 
-                instruction = new Instruction("not", -1);
+                instruction = new Instruction(OprType.not, -1);
                 instructions.add(instruction);
                 break;
             case NEQ:
                 if(type.equals("int"))
-                    instruction = new Instruction("cmp.i", -1);
+                    instruction = new Instruction(OprType.cmpi, -1);
                 else if(type.equals("double"))
-                    instruction = new Instruction("cmp.f", -1);
+                    instruction = new Instruction(OprType.cmpf, -1);
                 else
                     throw new AnalyzeError(ErrorCode.InvalidInput);
                 instructions.add(instruction);
                 break;
             case LT:
                 if(type.equals("int"))
-                    instruction = new Instruction("cmp.i", -1);
+                    instruction = new Instruction(OprType.cmpi, -1);
                 else if(type.equals("double"))
-                    instruction = new Instruction("cmp.f", -1);
+                    instruction = new Instruction(OprType.cmpf, -1);
                 else
                     throw new AnalyzeError(ErrorCode.InvalidInput);
                 instructions.add(instruction);
 
-                instruction = new Instruction("set.lt", -1);
+                instruction = new Instruction(OprType.setlt, -1);
                 instructions.add(instruction);
                 break;
             case GT:
                 if(type.equals("int"))
-                    instruction = new Instruction("cmp.i", -1);
+                    instruction = new Instruction(OprType.cmpi, -1);
                 else if(type.equals("double"))
-                    instruction = new Instruction("cmp.f", -1);
+                    instruction = new Instruction(OprType.cmpf, -1);
                 else
                     throw new AnalyzeError(ErrorCode.InvalidInput);
                 instructions.add(instruction);
 
-                instruction = new Instruction("set.gt", -1);
+                instruction = new Instruction(OprType.setgt, -1);
                 instructions.add(instruction);
                 break;
             case LE:
                 if(type.equals("int"))
-                    instruction = new Instruction("cmp.i", -1);
+                    instruction = new Instruction(OprType.cmpi, -1);
                 else if(type.equals("double"))
-                    instruction = new Instruction("cmp.f", -1);
+                    instruction = new Instruction(OprType.cmpf, -1);
                 else
                     throw new AnalyzeError(ErrorCode.InvalidInput);
                 instructions.add(instruction);
 
-                instruction = new Instruction("set.gt", -1);
+                instruction = new Instruction(OprType.setgt, -1);
                 instructions.add(instruction);
-                instruction = new Instruction("not", -1);
+                instruction = new Instruction(OprType.not, -1);
                 instructions.add(instruction);
                 break;
             case GE:
                 if(type.equals("int"))
-                    instruction = new Instruction("cmp.i", -1);
+                    instruction = new Instruction(OprType.cmpi, -1);
                 else if(type.equals("double"))
-                    instruction = new Instruction("cmp.f", -1);
+                    instruction = new Instruction(OprType.cmpf, -1);
                 else
                     throw new AnalyzeError(ErrorCode.InvalidInput);
                 instructions.add(instruction);
 
-                instruction = new Instruction("set.lt", -1);
+                instruction = new Instruction(OprType.setlt, -1);
                 instructions.add(instruction);
-                instruction = new Instruction("not", -1);
+                instruction = new Instruction(OprType.not, -1);
                 instructions.add(instruction);
                 break;
             default:
@@ -360,12 +361,12 @@ public final class Analyser {
         globalTable.add(new Global(1, 6, "_start"));
         Symbol main = symbolTable.get(mainLoca);
         if (!main.getRetType().equals("void")) {
-            initInstructions.add(new Instruction("stackalloc", 1));
-            initInstructions.add(new Instruction("call", functionCount - 1));
-            initInstructions.add(new Instruction("popn", 1));
+            initInstructions.add(new Instruction(OprType.stackalloc, 1));
+            initInstructions.add(new Instruction(OprType.call, functionCount - 1));
+            initInstructions.add(new Instruction(OprType.popn, 1));
         } else {
-            initInstructions.add(new Instruction("stackalloc", 0));
-            initInstructions.add(new Instruction("call", functionCount - 1));
+            initInstructions.add(new Instruction(OprType.stackalloc, 0));
+            initInstructions.add(new Instruction(OprType.call, functionCount - 1));
         }
         _start = new Function("_start", globalCount, 0, 0, 0, initInstructions, layer, "void");
         globalCount++;
@@ -415,10 +416,10 @@ public final class Analyser {
             Instruction instruction;
 
             if (layer == 1) {
-                instruction = new Instruction("globa", globalCount);
+                instruction = new Instruction(OprType.globa, globalCount);
                 instructions.add(instruction);
             } else {
-                instruction = new Instruction("loca", localCount);
+                instruction = new Instruction(OprType.loca, localCount);
                 instructions.add(instruction);
             }
             next();
@@ -426,7 +427,7 @@ public final class Analyser {
             while (!op.empty())
                 operatorInstructions(op.pop(), instructions, exprType);
 
-            instruction = new Instruction("store.64", -1);
+            instruction = new Instruction(OprType.store64, -1);
             instructions.add(instruction);
         }
 
@@ -469,10 +470,10 @@ public final class Analyser {
             throw new AnalyzeError(ErrorCode.CompileError, peekedToken.getStartPos());
 
         if (layer == 1) {
-            instruction = new Instruction("globa", globalCount);
+            instruction = new Instruction(OprType.globa, globalCount);
             instructions.add(instruction);
         } else {
-            instruction = new Instruction("loca", localCount);
+            instruction = new Instruction(OprType.loca, localCount);
             instructions.add(instruction);
         }
         expect(TokenType.ASSIGN);
@@ -480,7 +481,7 @@ public final class Analyser {
         while (!op.empty())
             operatorInstructions(op.pop(), instructions, exprType);
 
-        instruction = new Instruction("store.64", -1);
+        instruction = new Instruction(OprType.store64, -1);
         instructions.add(instruction);
 
         expect(TokenType.SEMICOLON);
@@ -627,17 +628,17 @@ public final class Analyser {
         if (symbol.getParamId() != -1) {
             Symbol func = symbol.getFunction();
             if (func.getRetType().equals("int"))
-                instructions.add(new Instruction("arga", 1 + symbol.getParamId()));
+                instructions.add(new Instruction(OprType.arga, 1 + symbol.getParamId()));
             else if (func.getRetType().equals("double"))
-                instructions.add(new Instruction("arga", 1 + symbol.getParamId()));
+                instructions.add(new Instruction(OprType.arga, 1 + symbol.getParamId()));
             else
-                instructions.add(new Instruction("arga", symbol.getParamId()));
+                instructions.add(new Instruction(OprType.arga, symbol.getParamId()));
         }
         else if (symbol.getParamId() == -1 && symbol.getLayer() != 1) {
-            instructions.add(new Instruction("loca", symbol.getLocalId()));
+            instructions.add(new Instruction(OprType.loca, symbol.getLocalId()));
         }
         else {
-            instructions.add(new Instruction("globa", symbol.getGlobalId()));
+            instructions.add(new Instruction(OprType.globa, symbol.getGlobalId()));
         }
 
         expect(TokenType.ASSIGN);
@@ -649,7 +650,7 @@ public final class Analyser {
             throw new AnalyzeError(ErrorCode.CompileError, peekedToken.getStartPos());
         else if (symbol.getType().equals(exprType) && (symbol.getType().equals("int") || symbol.getType().equals("double"))) {
             initializeSymbol(symbol.getName(), peekedToken.getStartPos());
-            instructions.add(new Instruction("store.64", -1));
+            instructions.add(new Instruction(OprType.store64, -1));
             return "void";
         }
         else
@@ -670,14 +671,14 @@ public final class Analyser {
         if (isLibrary) {
             String name = symbol.getName();
             globalTable.add(new Global(1, name.length(), name));
-            instruction = new Instruction("callname", globalCount);
+            instruction = new Instruction(OprType.callname, globalCount);
             globalCount++;
         }
         else {
             if (!symbol.getType().equals("function"))
                 throw new AnalyzeError(ErrorCode.CompileError, ident.getStartPos());
             int id = getFunctionId(symbol.getName(), functionTable);
-            instruction = new Instruction("call", id + 1);
+            instruction = new Instruction(OprType.call, id + 1);
         }
 
         String name = symbol.getName();
@@ -685,9 +686,9 @@ public final class Analyser {
         op.push(TokenType.L_PAREN);
 
         if (functionHasReturn(name, functionTable))
-            instructions.add(new Instruction("stackalloc", 1));
+            instructions.add(new Instruction(OprType.stackalloc, 1));
         else
-            instructions.add(new Instruction("stackalloc", 0));
+            instructions.add(new Instruction(OprType.stackalloc, 0));
 
         if (!check(TokenType.R_PAREN)) {
             analyseCallParamList(symbol);
@@ -791,19 +792,19 @@ public final class Analyser {
         if (symbol.getParamId() != -1) {
             Symbol func = symbol.getFunction();
             if (func.getRetType().equals("int"))
-                instructions.add(new Instruction("arga", 1 + symbol.getParamId()));
+                instructions.add(new Instruction(OprType.arga, 1 + symbol.getParamId()));
             else if (func.getRetType().equals("double"))
-                instructions.add(new Instruction("arga", 1 + symbol.getParamId()));
+                instructions.add(new Instruction(OprType.arga, 1 + symbol.getParamId()));
             else
-                instructions.add(new Instruction("arga", symbol.getParamId()));
+                instructions.add(new Instruction(OprType.arga, symbol.getParamId()));
         }
         else if (symbol.getParamId() == -1 && symbol.getLayer() != 1) {
-            instructions.add(new Instruction("loca", symbol.getLocalId()));
+            instructions.add(new Instruction(OprType.loca, symbol.getLocalId()));
         }
         else {
-            instructions.add(new Instruction("globa", symbol.getGlobalId()));
+            instructions.add(new Instruction(OprType.globa, symbol.getGlobalId()));
         }
-        instructions.add(new Instruction("load.64", -1));
+        instructions.add(new Instruction(OprType.load64, -1));
         return symbol.getType();
     }
 
@@ -817,12 +818,12 @@ public final class Analyser {
     private String analyseLiteralExpr() throws CompileError {
         if (check(TokenType.UINT_LITERAL)) {
             Token token = next();
-            instructions.add(new Instruction("push", (long) token.getValue()));
+            instructions.add(new Instruction(OprType.push, (long) token.getValue()));
             return "int";
         } else if (check(TokenType.DOUBLE_LITERAL)) {
             Token token = next();
             String binary = Long.toBinaryString(Double.doubleToRawLongBits((Double) token.getValue()));
-            Instruction instruction = new Instruction("push", toTen(binary));
+            Instruction instruction = new Instruction(OprType.push, toTen(binary));
             instructions.add(instruction);
             return "double";
         } else if (check(TokenType.STRING_LITERAL)) {
@@ -830,12 +831,12 @@ public final class Analyser {
             String name = (String) token.getValue();
             globalTable.add(new Global(1, name.length(), name));
 
-            instructions.add(new Instruction("push", globalCount));
+            instructions.add(new Instruction(OprType.push, globalCount));
             globalCount++;
             return "string";
         } else if (check(TokenType.CHAR_LITERAL)) {
             Token token = next();
-            instructions.add(new Instruction("push", (Integer) token.getValue()));
+            instructions.add(new Instruction(OprType.push, (Integer) token.getValue()));
             return "int";
         } else
             throw new AnalyzeError(ErrorCode.CompileError, peekedToken.getStartPos());
@@ -885,11 +886,11 @@ public final class Analyser {
         expect(TokenType.AS_KW);
         String rightType = analyseTy();
         if (exprType.equals("int") && rightType.equals("double")) {
-            instructions.add(new Instruction("itof", -1));
+            instructions.add(new Instruction(OprType.itof, -1));
             return "double";
         }
         else if (exprType.equals("double") && rightType.equals("int")) {
-            instructions.add(new Instruction("ftoi", -1));
+            instructions.add(new Instruction(OprType.ftoi, -1));
             return "int";
         }
         else if (exprType.equals(rightType)) {
@@ -994,7 +995,7 @@ public final class Analyser {
         function.setLayer(layer);
 
         if (symbol.getRetType().equals("void"))
-            instructions.add(new Instruction("ret", -1));
+            instructions.add(new Instruction(OprType.ret, -1));
         else if (!returnFunction.getName().equals(nowFuntion.getName())) {
             throw new AnalyzeError(ErrorCode.CompileError, peekedToken.getStartPos());
         }
@@ -1119,8 +1120,8 @@ public final class Analyser {
         if (!type.equals("int") && !type.equals("double"))
             throw new AnalyzeError(ErrorCode.CompileError, peekedToken.getStartPos());
 
-        instructions.add(new Instruction("br.true", 1));
-        Instruction jump = new Instruction("br", 0);
+        instructions.add(new Instruction(OprType.brtrue, 1));
+        Instruction jump = new Instruction(OprType.br, 0);
         instructions.add(jump);
         int index = instructions.size();
 
@@ -1136,12 +1137,12 @@ public final class Analyser {
                 if (check(TokenType.L_BRACE)) {
                     analyseBlockStmt();
                     if (!instructions.get(size - 1).getOp().equals("ret"))
-                        instructions.add(new Instruction("br", 0));
+                        instructions.add(new Instruction(OprType.br, 0));
                 } else if (check(TokenType.IF_KW))
                     analyseIfStmt();
             }
         } else {
-            Instruction jumpInstruction = new Instruction("br", -1);
+            Instruction jumpInstruction = new Instruction(OprType.br, -1);
             instructions.add(jumpInstruction);
             int j = instructions.size();
 
@@ -1152,7 +1153,7 @@ public final class Analyser {
                 expect(TokenType.ELSE_KW);
                 if (check(TokenType.L_BRACE)) {
                     analyseBlockStmt();
-                    instructions.add(new Instruction("br", 0));
+                    instructions.add(new Instruction(OprType.br, 0));
                 } else if (check(TokenType.IF_KW))
                     analyseIfStmt();
             }
@@ -1171,7 +1172,7 @@ public final class Analyser {
     private void analyseWhileStmt() throws CompileError {
         expect(TokenType.WHILE_KW);
 
-        instructions.add(new Instruction("br", 0));
+        instructions.add(new Instruction(OprType.br, 0));
         int whileStart = instructions.size();
 
         String type = analyseExpr();
@@ -1181,8 +1182,8 @@ public final class Analyser {
         if (!type.equals("int") && !type.equals("double"))
             throw new AnalyzeError(ErrorCode.CompileError, peekedToken.getStartPos());
 
-        instructions.add(new Instruction("br.true", 1));
-        Instruction jumpInstruction = new Instruction("br", 0);
+        instructions.add(new Instruction(OprType.brtrue, 1));
+        Instruction jumpInstruction = new Instruction(OprType.br, 0);
         instructions.add(jumpInstruction);
         int index = instructions.size();
 
@@ -1190,7 +1191,7 @@ public final class Analyser {
         analyseBlockStmt();
         if (inCycle > 0) inCycle--;
 
-        Instruction instruction = new Instruction("br", 0);
+        Instruction instruction = new Instruction(OprType.br, 0);
         instructions.add(instruction);
         int whileEnd = instructions.size();
         instruction.setX(whileStart - whileEnd);
@@ -1210,13 +1211,13 @@ public final class Analyser {
         String type = "void";
 
         if (!nowFuntion.getRetType().equals("void")) {
-            instructions.add(new Instruction("arga", 0));
+            instructions.add(new Instruction(OprType.arga, 0));
 
             type = analyseExpr();
             while (!op.empty())
                 operatorInstructions(op.pop(), instructions, type);
 
-            instructions.add(new Instruction("store.64", -1));
+            instructions.add(new Instruction(OprType.store64, -1));
         }
 
         if (!check(TokenType.SEMICOLON))
@@ -1230,7 +1231,7 @@ public final class Analyser {
 
         while (!op.empty())
             operatorInstructions(op.pop(), instructions, type);
-        instructions.add(new Instruction("ret", -1));
+        instructions.add(new Instruction(OprType.ret, -1));
     }
 
     /**

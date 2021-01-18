@@ -4,13 +4,14 @@ import miniplc0java.analyser.Function;
 import miniplc0java.analyser.Global;
 import miniplc0java.instruction.Instruction;
 import miniplc0java.instruction.Operation;
+import miniplc0java.instruction.OprType;
 
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
 public class Output {
-    Map<String, Integer> operations = Operation.getOperations();
+    Map<OprType, Integer> operations = Operation.getOperations();
     List<Global> globalTable;
     List<Function> functionTable;
     Function _start;
@@ -58,7 +59,7 @@ public class Output {
         addInt(4, function.getBody().size());
         List<Instruction> instructions = function.getBody();
         for (Instruction instruction : instructions) {
-            String op = instruction.getOp();
+            OprType op = instruction.getOp();
             int opInt = operations.get(op);
             addInt(1, opInt);
             if (instruction.getX() != -1) {

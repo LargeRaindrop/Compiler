@@ -11,12 +11,12 @@ miniplc0java/error/ErrorCode.java
  miniplc0java.error.ErrorCode
 miniplc0java/error/ExpectedTokenError.java
  miniplc0java.error.ExpectedTokenError
-miniplc0java/instruction/Operation.java
- miniplc0java.instruction.Operation
+miniplc0java/analyser/Global.java
+ miniplc0java.analyser.Global
 miniplc0java/tokenizer/StringIter.java
  miniplc0java.tokenizer.StringIter
-miniplc0java/instruction/Instruction.java
- miniplc0java.instruction.Instruction
+miniplc0java/analyser/Symbol.java
+ miniplc0java.analyser.Symbol
 miniplc0java/tokenizer/Token.java
  miniplc0java.tokenizer.Token
 miniplc0java/util/Pos.java
@@ -25,16 +25,20 @@ miniplc0java/tokenizer/Tokenizer.java
  miniplc0java.tokenizer.Tokenizer
 miniplc0java/error/AnalyzeError.java
  miniplc0java.error.AnalyzeError
-miniplc0java/analyser/Symbol.java
- miniplc0java.analyser.Symbol
-miniplc0java/analyser/Global.java
- miniplc0java.analyser.Global
-miniplc0java/util/Output.java
- miniplc0java.util.Output
-miniplc0java/analyser/Function.java
- miniplc0java.analyser.Function
 miniplc0java/analyser/Analyser.java
  miniplc0java.analyser.Analyser
  miniplc0java.analyser.Analyser$1
+miniplc0java/util/Output.java
+ miniplc0java.util.Output
+miniplc0java/instruction/Instruction.java
+ miniplc0java.instruction.Instruction
+ miniplc0java.instruction.Instruction$1
+miniplc0java/instruction/OprType.java
+ miniplc0java.instruction.OprType
+ miniplc0java.instruction.OprType$1
 miniplc0java/App.java
  miniplc0java.App
+miniplc0java/instruction/Operation.java
+ miniplc0java.instruction.Operation
+miniplc0java/analyser/Function.java
+ miniplc0java.analyser.Function

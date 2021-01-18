@@ -1,12 +1,13 @@
 package miniplc0java.instruction;
 
+import java.util.ArrayList;
 import java.util.Objects;
 
 public class Instruction {
-    private String op;
+    private OprType op;
     private long x;
 
-    public Instruction(String op, long x) {
+    public Instruction(OprType op, long x) {
         this.op = op;
         this.x = x;
     }
@@ -26,11 +27,11 @@ public class Instruction {
         return Objects.hash(op, x);
     }
 
-    public String getOp() {
+    public OprType getOp() {
         return op;
     }
 
-    public void setOp(String op) {
+    public void setOp(OprType op) {
         this.op = op;
     }
 
@@ -44,6 +45,22 @@ public class Instruction {
 
     @Override
     public String toString() {
-        return "" + op + " " + x;
+//        return "" + op + " " + x;
+        switch (op) {
+            case push:
+            case popn:
+            case loca:
+            case arga:
+            case globa:
+            case stackalloc:
+            case br:
+            case brtrue:
+            case brfalse:
+            case call:
+            case callname:
+                return "" + op + " " + x;
+            default:
+                return "" + op;
+        }
     }
 }
