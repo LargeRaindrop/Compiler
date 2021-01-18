@@ -11,7 +11,6 @@ import java.util.List;
 import java.util.Map;
 
 public class Output {
-    Map<OprType, Integer> operations = Operation.getOperations();
     List<Global> globalTable;
     List<Function> functionTable;
     Function _start;
@@ -60,7 +59,7 @@ public class Output {
         List<Instruction> instructions = function.getBody();
         for (Instruction instruction : instructions) {
             OprType op = instruction.getOp();
-            int opInt = operations.get(op);
+            int opInt = Operation.getHexOperations().get(op);
             addInt(1, opInt);
             if (instruction.getX() != -1) {
                 if (opInt == 1)
