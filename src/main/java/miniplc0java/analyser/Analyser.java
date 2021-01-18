@@ -1194,6 +1194,8 @@ public final class Analyser {
         instructions.add(instruction);
         int whileEnd = instructions.size();
         instruction.setX(whileStart - whileEnd);
+
+        jumpInstruction.setX(whileEnd - index);
     }
 
 

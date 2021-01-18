@@ -29,12 +29,12 @@ miniplc0java/analyser/Symbol.java
  miniplc0java.analyser.Symbol
 miniplc0java/analyser/Global.java
  miniplc0java.analyser.Global
+miniplc0java/util/Output.java
+ miniplc0java.util.Output
+miniplc0java/analyser/Function.java
+ miniplc0java.analyser.Function
 miniplc0java/analyser/Analyser.java
  miniplc0java.analyser.Analyser
  miniplc0java.analyser.Analyser$1
-miniplc0java/analyser/Function.java
- miniplc0java.analyser.Function
-miniplc0java/util/Output.java
- miniplc0java.util.Output
 miniplc0java/App.java
  miniplc0java.App
