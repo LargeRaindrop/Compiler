@@ -4,8 +4,8 @@ import java.util.ArrayList;
 import java.util.Objects;
 
 public class Instruction {
-    private OprType op;
-    private long x;
+    OprType op;
+    long x;
 
     public Instruction(OprType op, long x) {
         this.op = op;

@@ -5,10 +5,10 @@ import miniplc0java.util.Pos;
 import java.util.Objects;
 
 public class Token {
-    private TokenType tokenType;
-    private Object value;
-    private Pos startPos;
-    private Pos endPos;
+    TokenType tokenType;
+    Object value;
+    Pos startPos;
+    Pos endPos;
 
     public Token(TokenType tokenType, Object value, Pos startPos, Pos endPos) {
         this.tokenType = tokenType;

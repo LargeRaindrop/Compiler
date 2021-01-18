@@ -3,12 +3,12 @@ package miniplc0java.analyser;
 import miniplc0java.tokenizer.TokenType;
 
 public class Operator {
-    public static int priority[][]={
+    static int priMatrix[][]={
             {1,1,-1,-1,-1,1,1,1,1,1,1,1,-1,-1},
             {1,1,-1,-1,-1,1,1,1,1,1,1,1,-1,-1},
             {1,1,1,1,-1,1,1,1,1,1,1,1,-1,-1},
             {1,1,1,1,-1,1,1,1,1,1,1,1,-1,-1},
-            {-1,-1,-1,-1,-1,100,-1,-1,-1,-1,-1,-1,-1,-1},
+            {-1,-1,-1,-1,-1,1,-1,-1,-1,-1,-1,-1,-1,-1},
             {-1,-1,-1,-1,0,0,-1,-1,-1,-1,-1,-1,-1,-1},
             {-1,-1,-1,-1,-1,1,1,1,1,1,1,1,-1,-1},
             {-1,-1,-1,-1,-1,1,1,1,1,1,1,1,-1,-1},
@@ -20,7 +20,7 @@ public class Operator {
             {1,1,1,1,1,1,1,1,1,1,1,1,1,1}
     };
 
-    public static int getPosition(TokenType tokenType){
+    public static int getPos(TokenType tokenType){
         if(tokenType == TokenType.PLUS){
             return 0;
         }
@@ -63,4 +63,7 @@ public class Operator {
         return -1;
     }
 
+    public static int[][] getPriMatrix() {
+        return priMatrix;
+    }
 }

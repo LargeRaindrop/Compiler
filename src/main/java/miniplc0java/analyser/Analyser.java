@@ -607,9 +607,9 @@ public final class Analyser {
             throw new AnalyzeError(ErrorCode.CompileError, peekedToken.getStartPos());
 
         if (!op.empty()) {
-            int in = Operator.getPosition(op.peek());
-            int out = Operator.getPosition(TokenType.FAN);
-            if (Operator.priority[in][out] > 0)
+            int in = Operator.getPos(op.peek());
+            int out = Operator.getPos(TokenType.FAN);
+            if (Operator.getPriMatrix()[in][out] > 0)
                 operatorInstructions(op.pop(), instructions, type);
         }
         return type;
@@ -915,9 +915,9 @@ public final class Analyser {
         Token token = analyseBinaryOperator();
 
         if (!op.empty()) {
-            int in = Operator.getPosition(op.peek());
-            int out = Operator.getPosition(token.getTokenType());
-            if (Operator.priority[in][out] > 0)
+            int in = Operator.getPos(op.peek());
+            int out = Operator.getPos(token.getTokenType());
+            if (Operator.getPriMatrix()[in][out] > 0)
                 operatorInstructions(op.pop(), instructions, exprType);
         }
         op.push(token.getTokenType());
